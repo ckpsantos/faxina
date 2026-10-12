@@ -77,6 +77,32 @@ enum Varredura {
     }
 }
 
+extension Varredura {
+    /// Lista fictícia para capturas de tela e demonstração (abra com FAXINA_DEMO=1).
+    /// Nenhum arquivo real aparece, e nenhum destes existe no disco.
+    static var exemplo: [ArquivoPesado] {
+        let casa = FileManager.default.homeDirectoryForCurrentUser
+        let itens: [(String, Double, Int, Bool)] = [  // caminho, GB, dias parado, aberto?
+            ("Movies/Viagem Chapada 2024.mov", 4.21, 610, true),
+            ("Downloads/Instalador macOS.dmg", 3.08, 240, false),
+            ("Movies/Gravação de tela 14-03.mov", 1.84, 380, true),
+            ("Downloads/curso-fotografia-modulo-3.zip", 1.22, 95, false),
+            ("Documents/Backup iPhone antigo.zip", 0.98, 1100, false),
+            ("Downloads/apresentacao-final-v7.key", 0.64, 12, true),
+            ("Movies/Aniversário 2023.mp4", 0.52, 720, true),
+            ("Downloads/dataset-treino.csv", 0.41, 30, false),
+            ("Documents/Projeto casa - plantas.pdf", 0.23, 200, true),
+            ("Downloads/podcast-episodio-12.wav", 0.18, 3, false),
+        ]
+        return itens.map { caminho, gb, dias, aberto in
+            let quando = Date().addingTimeInterval(-Double(dias) * 86_400)
+            return ArquivoPesado(
+                url: casa.appendingPathComponent(caminho), tamanho: Int64(gb * 1_000_000_000),
+                ultimoUso: aberto ? quando : nil, modificado: aberto ? quando.addingTimeInterval(-86_400) : quando)
+        }
+    }
+}
+
 @MainActor
 final class ArquivosModel: ObservableObject {
     @Published var arquivos: [ArquivoPesado] = []
@@ -89,6 +115,12 @@ final class ArquivosModel: ObservableObject {
 
     func varrer() {
         guard !varrendo else { return }
+        if ProcessInfo.processInfo.environment["FAXINA_DEMO"] != nil {
+            arquivos = Varredura.exemplo
+            jaVarreu = true
+            atualizadoEm = Date()
+            return
+        }
         varrendo = true
         aviso = nil
         Task {
@@ -143,6 +175,7 @@ struct ArquivosView: View {
             EspacoDisco(gatilho: model.versaoDisco + drive.versaoDisco + Historico.shared.versaoDisco)
             Divider()
             conteudo
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             Divider()
             if let resumo = drive.resumo {
                 HStack(spacing: 10) {
@@ -274,6 +307,7 @@ struct ArquivosView: View {
         HStack {
             Toggle("Marcar todos", isOn: todosMarcados)
                 .toggleStyle(.checkbox)
+                .fixedSize()
                 .disabled(visiveis.isEmpty)
             if let aviso = drive.aviso ?? model.aviso {
                 Label(aviso, systemImage: "exclamationmark.triangle").foregroundStyle(.orange)
@@ -285,6 +319,7 @@ struct ArquivosView: View {
             }
             Spacer()
             Button("Mostrar no Finder") { mostrarNoFinder(selecionados.map(\.url)) }
+                .fixedSize()
                 .disabled(selecionados.isEmpty)
             Menu("Fazer upload no Google Drive") {
                 Menu("Escolher conta") {
@@ -302,8 +337,10 @@ struct ArquivosView: View {
             .fixedSize()
             .help(selecionados.isEmpty ? "Marque os arquivos que quer enviar." : "")
             Button("Mover para a Lixeira", role: .destructive) { confirmando = true }
+                .fixedSize()
                 .disabled(selecionados.isEmpty)
         }
+        .lineLimit(1)
         .padding(12)
     }
 }

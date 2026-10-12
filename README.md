@@ -2,6 +2,14 @@
 
 App nativo de Mac (SwiftUI) para liberar espaço e organizar arquivos. Nada é apagado direto: tudo vai para a Lixeira ou para o Google Drive, e pode ser desfeito.
 
+![Arquivos pesados](docs/arquivos.png)
+
+| Caches e sobras | Aplicativos | Memória |
+|---|---|---|
+| ![Caches e sobras](docs/caches.png) | ![Aplicativos](docs/apps.png) | ![Memória](docs/memoria.png) |
+
+A lista de arquivos da primeira imagem é fictícia (modo de demonstração: `open --env FAXINA_DEMO=1 /Applications/Faxina.app`).
+
 ## Abas
 
 - **Arquivos pesados**: arquivos de 100 MB ou mais na pasta pessoal; mover para a Lixeira ou fazer upload no Google Drive.

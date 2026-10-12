@@ -6,8 +6,9 @@ struct FaxinaApp: App {
         // Janela única: fechar e reabrir o app sempre traz a janela de volta.
         Window("Faxina", id: "principal") {
             ContentView()
-                .frame(minWidth: 880, minHeight: 560)
+                .frame(minWidth: 1000, minHeight: 600)
         }
+        .defaultSize(width: 1100, height: 720)
         .defaultLaunchBehavior(.presented)
         .restorationBehavior(.disabled)
     }

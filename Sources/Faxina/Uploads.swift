@@ -17,7 +17,9 @@ struct UploadsView: View {
             if drive.itens.isEmpty {
                 ContentUnavailableView(
                     "Nenhum upload ainda", systemImage: "icloud.and.arrow.up",
-                    description: Text("Os arquivos que você mandar para o Google Drive aparecem aqui com o andamento do envio."))
+                    description: Text("Os arquivos que você mandar para o Google Drive aparecem aqui com o andamento do envio.")
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 cabecalho
                 Divider()

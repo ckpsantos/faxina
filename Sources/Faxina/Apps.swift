@@ -133,6 +133,7 @@ struct AppsView: View {
             EspacoDisco(gatilho: model.versaoDisco + Historico.shared.versaoDisco)
             Divider()
             conteudo
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             Divider()
             rodape
         }

@@ -168,7 +168,9 @@ struct HistoricoView: View {
             if model.registros.isEmpty {
                 ContentUnavailableView(
                     "Nenhuma ação ainda", systemImage: "clock.arrow.circlepath",
-                    description: Text("O que você mover para a Lixeira, limpar ou enviar ao Drive aparece aqui, arquivo por arquivo, e pode ser desfeito."))
+                    description: Text("O que você mover para a Lixeira, limpar ou enviar ao Drive aparece aqui, arquivo por arquivo, e pode ser desfeito.")
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 tabela
             }

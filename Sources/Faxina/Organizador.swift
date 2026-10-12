@@ -184,6 +184,7 @@ struct OrganizadorView: View {
     var body: some View {
         VStack(spacing: 0) {
             conteudo
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             Divider()
             rodape
         }
