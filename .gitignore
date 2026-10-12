@@ -1,0 +1,5 @@
+.build/
+dist/
+icone/AppIcon.iconset/
+.DS_Store
+.assinatura.local
